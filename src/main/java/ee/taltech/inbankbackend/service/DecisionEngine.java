@@ -150,10 +150,7 @@ String lastFourStr = personalCode.substring(personalCode.length() - 4);
         throws InvalidPersonalCodeException, InvalidLoanAmountException, InvalidLoanPeriodException {
 
 
-   if (!(DecisionEngineConstants.MINIMUM_LOAN_PERIOD <= loanPeriod)
-                || !(loanPeriod <= DecisionEngineConstants.MAXIMUM_LOAN_PERIOD)) {
-            throw new InvalidLoanPeriodException("Invalid loan period!");
-        }
+
     if (!validator.isValid(personalCode)) {
         throw new InvalidPersonalCodeException("Invalid personal ID code!");
     }
@@ -161,7 +158,10 @@ String lastFourStr = personalCode.substring(personalCode.length() - 4);
     if (loanAmount < DecisionEngineConstants.MINIMUM_LOAN_AMOUNT || loanAmount > DecisionEngineConstants.MAXIMUM_LOAN_AMOUNT) {
         throw new InvalidLoanAmountException("Invalid loan amount!");
     }
-
+   if (!(DecisionEngineConstants.MINIMUM_LOAN_PERIOD <= loanPeriod)
+                || !(loanPeriod <= DecisionEngineConstants.MAXIMUM_LOAN_PERIOD)) {
+            throw new InvalidLoanPeriodException("Invalid loan period!");
+        }
    
   
 }
