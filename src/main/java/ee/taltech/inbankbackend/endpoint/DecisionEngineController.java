@@ -45,31 +45,32 @@ public class DecisionEngineController {
     @PostMapping("/decision")
     public ResponseEntity<DecisionResponse> requestDecision(@RequestBody DecisionRequest request) {
         try {
-            Decision decision = decisionEngine.
-                    calculateApprovedLoan(request.getPersonalCode(), request.getLoanAmount(), request.getLoanPeriod());
+            Decision decision = decisionEngine.calculateApprovedLoan(request.getPersonalCode(), request.getLoanAmount(), request.getLoanPeriod());
             response.setLoanAmount(decision.getLoanAmount());
             response.setLoanPeriod(decision.getLoanPeriod());
             response.setErrorMessage(decision.getErrorMessage());
 
             return ResponseEntity.ok(response);
         } catch (InvalidPersonalCodeException | InvalidLoanAmountException | InvalidLoanPeriodException e) {
-            response.setLoanAmount(null);
-            response.setLoanPeriod(null);
-            response.setErrorMessage(e.getMessage());
-
-            return ResponseEntity.badRequest().body(response);
+            return buildErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage());
         } catch (NoValidLoanException e) {
-            response.setLoanAmount(null);
-            response.setLoanPeriod(null);
-            response.setErrorMessage(e.getMessage());
-
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            return buildErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
         } catch (Exception e) {
-            response.setLoanAmount(null);
-            response.setLoanPeriod(null);
-            response.setErrorMessage("An unexpected error occurred");
-
-            return ResponseEntity.internalServerError().body(response);
+            return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred");
         }
+    }
+
+    /**
+     * Helper method to create a consistent error response.
+     *
+     * @param status The HTTP status to return
+     * @param errorMessage The error message to include in the response
+     * @return ResponseEntity with the error response
+     */
+    private ResponseEntity<DecisionResponse> buildErrorResponse(HttpStatus status, String errorMessage) {
+        response.setLoanAmount(null);
+        response.setLoanPeriod(null);
+        response.setErrorMessage(errorMessage);
+        return ResponseEntity.status(status).body(response);
     }
 }
