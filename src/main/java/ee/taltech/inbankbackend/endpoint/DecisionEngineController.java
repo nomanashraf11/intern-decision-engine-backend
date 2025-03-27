@@ -54,7 +54,7 @@ public class DecisionEngineController {
         } catch (InvalidPersonalCodeException | InvalidLoanAmountException | InvalidLoanPeriodException e) {
             return buildErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage());
         } catch (NoValidLoanException e) {
-            return buildErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY, e.getMessage());
+            return buildErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage());
         } catch (Exception e) {
             return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred");
         }
