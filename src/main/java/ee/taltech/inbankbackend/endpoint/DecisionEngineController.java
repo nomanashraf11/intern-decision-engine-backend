@@ -1,5 +1,6 @@
 package ee.taltech.inbankbackend.endpoint;
 
+import ee.taltech.inbankbackend.exceptions.InvalidAgeException;
 import ee.taltech.inbankbackend.exceptions.InvalidLoanAmountException;
 import ee.taltech.inbankbackend.exceptions.InvalidLoanPeriodException;
 import ee.taltech.inbankbackend.exceptions.InvalidPersonalCodeException;
@@ -55,7 +56,9 @@ public class DecisionEngineController {
             return buildErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage());
         } catch (NoValidLoanException e) {
             return buildErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage());
-        } catch (Exception e) {
+        } catch (InvalidAgeException e) {
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage());
+    }catch (Exception e) {
             return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred");
         }
     }
