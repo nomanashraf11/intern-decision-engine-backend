@@ -81,3 +81,8 @@ Edge cases, such as invalid input formats, empty values, or extreme loan amounts
 
 - **Issue**: After the requested loan amount is validated, it is not used in the final decision. Instead, the decision is based on the credit modifier, loan period, and minimum loan amount.
 - **Resolution**: Adjust the decision-making process to incorporate the requested loan amount as a factor in the final outcome.
+
+### 5. **Range Of last 4 digits of Personal Id code **
+
+- **Issue**: The initial code has range calculator for last 4 digits of the personal id but in assessment instructions their was pointed out to use 4 fixed personal ids for now
+- **Resolution**: I have adjusted the code for now for these hardcoded personal ids
